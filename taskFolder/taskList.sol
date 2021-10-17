@@ -7,7 +7,7 @@ pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 // This is class that describes you smart contract.
-contract shopQueue {
+contract taskList {
     // Structure that stores the task list
 	struct task {
         string taskName;
