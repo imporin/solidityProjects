@@ -1,0 +1,92 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "createToken",
+			"inputs": [
+				{"name":"model","type":"string"},
+				{"name":"serialNum","type":"uint256"},
+				{"name":"typeName","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getTokenOwner",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getTokenInfo",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"tokenModel","type":"string"},
+				{"name":"tokenSerialNum","type":"uint256"},
+				{"name":"tokenTypeName","type":"string"}
+			]
+		},
+		{
+			"name": "changeOwner",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"},
+				{"name":"pubKeyOfNewOwner","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeSerialNum",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"},
+				{"name":"serialNum","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeTypeName",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"},
+				{"name":"typeName","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "putUpForSale",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"},
+				{"name":"price","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"components":[{"name":"model","type":"string"},{"name":"serialNum","type":"uint256"},{"name":"typeName","type":"string"}],"name":"tokensArr","type":"tuple[]"},
+		{"name":"tokenToOwner","type":"map(uint256,uint256)"},
+		{"name":"tokenPrice","type":"map(uint256,uint256)"}
+	]
+}
