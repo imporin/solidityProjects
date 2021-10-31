@@ -1,0 +1,122 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"address_base","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDefensePower",
+			"inputs": [
+				{"name":"val","type":"int8"}
+			],
+			"outputs": [
+				{"name":"value0","type":"int8"}
+			]
+		},
+		{
+			"name": "getAttackPower",
+			"inputs": [
+				{"name":"val","type":"int8"}
+			],
+			"outputs": [
+				{"name":"value0","type":"int8"}
+			]
+		},
+		{
+			"name": "deathProccessing",
+			"inputs": [
+				{"name":"dest","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "attack",
+			"inputs": [
+				{"name":"objectAddress","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getAttack",
+			"inputs": [
+				{"name":"attackPoints","type":"int8"},
+				{"name":"attacker","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendAndDie",
+			"inputs": [
+				{"name":"dest","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "healthPoint",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"healthPoint","type":"int256"}
+			]
+		},
+		{
+			"name": "defensePower",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"defensePower","type":"int8"}
+			]
+		},
+		{
+			"name": "baseAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"baseAddress","type":"address"}
+			]
+		},
+		{
+			"name": "unitAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"unitAddress","type":"address"}
+			]
+		},
+		{
+			"name": "attackPower",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"attackPower","type":"int8"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"healthPoint","type":"int256"},
+		{"name":"defensePower","type":"int8"},
+		{"name":"baseAddress","type":"address"},
+		{"name":"unitAddress","type":"address"},
+		{"name":"attackPower","type":"int8"},
+		{"name":"defensePotential","type":"int8"},
+		{"name":"attackPotential","type":"int8"}
+	]
+}
