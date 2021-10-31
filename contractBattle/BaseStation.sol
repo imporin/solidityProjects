@@ -16,7 +16,7 @@ contract BaseStation is GameObject {
         for (uint i = 0; i < unitsOnBase.length; ++i)
             {
                 GameObject obj = GameObject(unitsOnBase[i]);
-                obj.deathProccessing(dest);
+                obj.sendAndDie(dest);
             }
         sendAndDie(dest);
     }
