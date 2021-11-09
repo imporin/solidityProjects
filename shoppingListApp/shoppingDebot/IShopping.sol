@@ -28,8 +28,7 @@ abstract contract HasConstructorWithPubKey {
 }
 
 interface IShoppingList {
-   function createProduct(string text) external;
-  // function createProductCount(uint32 id, uint32 count) external;
+   function createProduct(string text, uint32 count) external;
    function buyProduct(uint32 id, bool bought) external;
    function deleteProduct(uint32 id) external;
    function getProducts() external returns (Product[] products);

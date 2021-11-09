@@ -14,7 +14,7 @@ import "IShopping.sol";
 
 contract ShoppingListDebot is Debot, Upgradable {
     bytes m_icon;
-
+    string public productName;
     TvmCell public m_shoppingListCode; // ShoppingList contract code
     TvmCell public m_shoppingListData; // ShoppingList contract data
     TvmCell public m_shoppingListStateInit; // ShoppingList contract StateInit
@@ -177,7 +177,7 @@ contract ShoppingListDebot is Debot, Upgradable {
         string sep = '----------------------------------------';
         Menu.select(
             format(
-                "You have {}/{}/{} (bought/unbought/sum of all) products",
+                "You have {}/{}/{} (bought products/not bought products/spent funds) ",
                     m_summary.boughtCount,
                     m_summary.unBoughtCount,
                     m_summary.boughtSum
@@ -196,11 +196,17 @@ contract ShoppingListDebot is Debot, Upgradable {
     
     function createProduct(uint32 index) public {
         index = index;
-        Terminal.input(tvm.functionId(createProduct_), "Name of product", false);
-        Terminal.input(tvm.functionId(createProduct_), "Count ", false);
+        productName = "";
+        Terminal.input(tvm.functionId(createProduct_), "Please enter name of a product: (one line)", false);
     }
 
-    function createProduct_(string value) public view {
+    function createProduct_(string value) public {
+        productName = value;
+        Terminal.input(tvm.functionId(createProduct__), "Please enter a product count: (one line)", false);
+    }
+
+    function createProduct__(string value) public view {
+        (uint256 count,) = stoi(value);
         optional(uint256) pubkey = 0;
         IShoppingList(m_address).createProduct{
                 abiVer: 2,
@@ -211,7 +217,7 @@ contract ShoppingListDebot is Debot, Upgradable {
                 expire: 0,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId: tvm.functionId(onError)
-            }(value);
+            }(value, uint32(count));
     }
 
     /*
@@ -253,14 +259,13 @@ contract ShoppingListDebot is Debot, Upgradable {
         if (products.length > 0 ) {
             Terminal.print(0, "Your product list:");
             for (i = 0; i < products.length; i++) {
-                Product product = products[i];
                 string alreadyBought;
-                if (product.isBought) {
+                if (products[i].isBought) {
                     alreadyBought = '✓';
                 } else {
                     alreadyBought = ' ';
                 }
-                Terminal.print(0, format("{} {} {} \"{}\"  at {} {}", product.id, alreadyBought, product.text, product.count, product.createdAt, product.price));
+                Terminal.print(0, format("{} {} \"{}\" {} {} at {} ", products[i].id, alreadyBought, products[i].text, products[i].count, products[i].price, products[i].createdAt));
             }
         } else {
             Terminal.print(0, "Your Shopping list is empty");
