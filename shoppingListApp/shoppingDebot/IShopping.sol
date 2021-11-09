@@ -29,7 +29,7 @@ abstract contract HasConstructorWithPubKey {
 
 interface IShoppingList {
    function createProduct(string text, uint32 count) external;
-   function buyProduct(uint32 id, bool bought) external;
+   function buyProduct(uint32 id, uint32 value) external;
    function deleteProduct(uint32 id) external;
    function getProducts() external returns (Product[] products);
    function getProductsSummary() external returns (ProductsSummary);

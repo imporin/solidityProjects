@@ -184,7 +184,7 @@
 		{
 			"name": "buyProduct__",
 			"inputs": [
-				{"name":"value","type":"bool"}
+				{"name":"value","type":"bytes"}
 			],
 			"outputs": [
 			]
