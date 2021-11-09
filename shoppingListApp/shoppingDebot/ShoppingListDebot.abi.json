@@ -142,6 +142,14 @@
 			]
 		},
 		{
+			"name": "createProduct__",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "showProducts",
 			"inputs": [
 				{"name":"index","type":"uint32"}
@@ -229,6 +237,14 @@
 			"inputs": [
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "productName",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"productName","type":"bytes"}
 			]
 		},
 		{

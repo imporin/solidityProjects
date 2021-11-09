@@ -28,11 +28,10 @@ contract ShoppingList {
         m_ownerPubkey = pubkey;
     }
 
-    function createProduct(string value) public onlyOwner {
+    function createProduct(string value, uint32 count) public onlyOwner {
         tvm.accept();
-        require(value != "", 175, "value cannot be empty");
         m_count++;
-        m_products[m_count] = Product(m_count, value, 0, now, false, 0);
+        m_products[m_count] = Product(m_count, value, count, now, false, 0);
     }
     /*
     function createProductCount(uint32 id, uint32 count) public onlyOwner {

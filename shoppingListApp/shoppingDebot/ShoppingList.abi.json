@@ -13,7 +13,8 @@
 		{
 			"name": "createProduct",
 			"inputs": [
-				{"name":"value","type":"bytes"}
+				{"name":"value","type":"bytes"},
+				{"name":"count","type":"uint32"}
 			],
 			"outputs": [
 			]
@@ -22,7 +23,7 @@
 			"name": "buyProduct",
 			"inputs": [
 				{"name":"id","type":"uint32"},
-				{"name":"price","type":"uint256"}
+				{"name":"value","type":"bool"}
 			],
 			"outputs": [
 			]
