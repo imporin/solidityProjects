@@ -12,14 +12,13 @@ import "../base/Upgradable.sol";
 import "../base/Sdk.sol";
 import "IShopping.sol";
 
-contract ShoppingListDebot is Debot, Upgradable {
+abstract contract ShoppingListDebot is Debot, Upgradable {
     bytes m_icon;
-    string public productName;
     TvmCell public m_shoppingListCode; // ShoppingList contract code
     TvmCell public m_shoppingListData; // ShoppingList contract data
     TvmCell public m_shoppingListStateInit; // ShoppingList contract StateInit
+    ProductsSummary m_summary;  // Statistics of shopping list
     address m_address;  // ShoppingList contract address
-    ProductsSummary m_summary;        // Statistics of shopping list
     uint32 m_productId;    // Purchase id for update
     uint256 m_masterPubKey; // User pubkey
     address m_msigAddress;  // User wallet address
@@ -142,7 +141,6 @@ contract ShoppingListDebot is Debot, Upgradable {
         }
     }
 
-
     function deploy() private view {
             TvmCell image = tvm.insertPubkey(m_shoppingListStateInit, m_masterPubKey);
             optional(uint256) none;
@@ -173,162 +171,10 @@ contract ShoppingListDebot is Debot, Upgradable {
         _menu();
     }
 
-    function _menu() private {
-        string sep = '----------------------------------------';
-        Menu.select(
-            format(
-                "You have {}/{}/{} (bought products/not bought products/spent funds) ",
-                    m_summary.boughtCount,
-                    m_summary.unBoughtCount,
-                    m_summary.boughtSum
-            ),
-            sep,
-            [
-                MenuItem("Create new product","",tvm.functionId(createProduct)),
-                MenuItem("Show products list","",tvm.functionId(showProducts)),
-                MenuItem("Buy product from list","",tvm.functionId(buyProduct)),
-                MenuItem("Delete product from list","",tvm.functionId(deleteProduct))
-            ]
-        );
+    function _menu() virtual public {
+
     }
         //
-        //m_productId = index;
-    
-    function createProduct(uint32 index) public {
-        index = index;
-        productName = "";
-        Terminal.input(tvm.functionId(createProduct_), "Please enter name of a product: (one line)", false);
-    }
-
-    function createProduct_(string value) public {
-        productName = value;
-        Terminal.input(tvm.functionId(createProduct__), "Please enter a product count: (one line)", false);
-    }
-
-    function createProduct__(string value) public view {
-        (uint256 count,) = stoi(value);
-        optional(uint256) pubkey = 0;
-        IShoppingList(m_address).createProduct{
-                abiVer: 2,
-                sign: true,
-                extMsg: true,
-                pubkey: pubkey,
-                time: uint64(now),
-                expire: 0,
-                callbackId: tvm.functionId(onSuccess),
-                onErrorId: tvm.functionId(onError)
-            }(value, uint32(count));
-    }
-
-    /*
-    function createProductCount(string value) public {
-        optional(uint256) pubkey = 0;
-        (uint256 num,) = stoi(value);
-        uint32 newProductCount;
-        newProductCount = uint32(num);
-        IShoppingList(m_address).createProductCount{
-                abiVer: 2,
-                extMsg: true,
-                sign: true,
-                pubkey: pubkey,
-                time: uint64(now),
-                expire: 0,
-                callbackId: tvm.functionId(onSuccess),
-                onErrorId: tvm.functionId(onError)
-            }(m_productId, newProductCount);
-    }
-    */
-
-    function showProducts(uint32 index) public view {
-        index = index;
-        optional(uint256) none;
-        IShoppingList(m_address).getProducts{
-            abiVer: 2,
-            extMsg: true,
-            sign: false,
-            pubkey: none,
-            time: uint64(now),
-            expire: 0,
-            callbackId: tvm.functionId(showProducts_),
-            onErrorId: 0
-        }();
-    }
-
-    function showProducts_( Product[] products ) public {
-        uint32 i;
-        if (products.length > 0 ) {
-            Terminal.print(0, "Your product list:");
-            for (i = 0; i < products.length; i++) {
-                string alreadyBought;
-                if (products[i].isBought) {
-                    alreadyBought = '✓';
-                } else {
-                    alreadyBought = ' ';
-                }
-                Terminal.print(0, format("{} {} \"{}\" {} {} at {} ", products[i].id, alreadyBought, products[i].text, products[i].count, products[i].price, products[i].createdAt));
-            }
-        } else {
-            Terminal.print(0, "Your Shopping list is empty");
-        }
-        _menu();
-    }
-
-    function buyProduct(uint32 index) public {
-        index = index;
-        if (m_summary.unBoughtCount > 0) {
-            Terminal.input(tvm.functionId(buyProduct_), "Enter product number:", false);
-        } else {
-            Terminal.print(0, "Sorry, you have no products to buy");
-            _menu();
-        }
-    }
-
-    function buyProduct_(string value) public {
-        (uint256 num,) = stoi(value);
-        m_productId = uint32(num);
-        ConfirmInput.get(tvm.functionId(buyProduct__),"Is this product bought?");
-    }
-
-    function buyProduct__(bool value) public view {
-        optional(uint256) pubkey = 0;
-        IShoppingList(m_address).buyProduct{
-                abiVer: 2,
-                extMsg: true,
-                sign: true,
-                pubkey: pubkey,
-                time: uint64(now),
-                expire: 0,
-                callbackId: tvm.functionId(onSuccess),
-                onErrorId: tvm.functionId(onError)
-            }(m_productId, value);
-    }
-
-
-    function deleteProduct(uint32 index) public {
-        index = index;
-        if (m_summary.boughtCount + m_summary.unBoughtCount > 0) {
-            Terminal.input(tvm.functionId(deleteProduct_), "Enter product number:", false);
-        } else {
-            Terminal.print(0, "Sorry, you have no products to delete");
-            _menu();
-        }
-    }
-
-    function deleteProduct_(string value) public view {
-        (uint256 num,) = stoi(value);
-        optional(uint256) pubkey = 0;
-        IShoppingList(m_address).deleteProduct{
-                abiVer: 2,
-                extMsg: true,
-                sign: true,
-                pubkey: pubkey,
-                time: uint64(now),
-                expire: 0,
-                callbackId: tvm.functionId(onSuccess),
-                onErrorId: tvm.functionId(onError)
-            }(uint32(num));
-    }
-
     function _getProductsSummary(uint32 answerId) private view {
         optional(uint256) none;
         IShoppingList(m_address).getProductsSummary{

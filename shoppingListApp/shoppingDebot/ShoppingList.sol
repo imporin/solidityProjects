@@ -33,24 +33,13 @@ contract ShoppingList {
         m_count++;
         m_products[m_count] = Product(m_count, value, count, now, false, 0);
     }
-    /*
-    function createProductCount(uint32 id, uint32 count) public onlyOwner {
+
+    function buyProduct(uint32 id, uint32 value) public onlyOwner {
         optional(Product) product = m_products.fetch(id);
         require(product.hasValue(), 102);
         tvm.accept();
         Product currentProduct = product.get();
-        currentProduct.count = count;
-        m_products[id] = currentProduct;
-    }
-    */
-    function buyProduct(uint32 id, bool value) public onlyOwner {
-        optional(Product) product = m_products.fetch(id);
-        require(product.hasValue(), 102);
-        require(value == true, 105, "You cannot cancel purchase of a product");
-        Product currentProduct = product.get();
-        require(currentProduct.isBought == false, 202, "You cannot buy product twice");
-        tvm.accept();
-        currentProduct.price = 0;
+        currentProduct.price = value;
         currentProduct.isBought = true;
         m_products[id] = currentProduct;
     }

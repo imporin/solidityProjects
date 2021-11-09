@@ -23,7 +23,7 @@
 			"name": "buyProduct",
 			"inputs": [
 				{"name":"id","type":"uint32"},
-				{"name":"value","type":"bool"}
+				{"name":"value","type":"uint32"}
 			],
 			"outputs": [
 			]
